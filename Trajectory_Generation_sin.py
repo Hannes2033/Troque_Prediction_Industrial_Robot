@@ -13,13 +13,13 @@ writer = pd.ExcelWriter('Data/1_final_Trajektorien_Daten.xlsx', engine='xlsxwrit
 trajectory_df = pd.DataFrame(columns=['Pos1','Pos2','Pos3','Pos4','Pos5','Pos6'])
 
 #Punkte pro Trajektorie
-length=1100
+length = 1100
 
 #Laufvariable
 j = 0
 
 #Anzahl Punkte die Konstant gehalten werden, bis Trajektorie Beginnt
-vorlauf=100
+vorlauf = 100
 
 #Anzahl der Trajektorien
 number_of_trajectories = 1000

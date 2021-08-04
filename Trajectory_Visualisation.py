@@ -1,27 +1,33 @@
 import matplotlib.pyplot as plt
 import pandas as pd
-import numpy as np
 
-pos_df = pd.read_excel('Data/2_final_Trajektorien_Daten.xlsx',sheet_name='Sheet3')
+
+# select data
+Data = 'Data/Trajectory_Data_xyz.xlsx' # data you want to visualize
+sheet = 'Sheet1' # sheet you want to visualize
+
+# loading data
+pos_df = pd.read_excel(Data, sheet_name = sheet)
+
+# transform to list
 pos = pos_df.values.tolist()
 
-# Figure erstellen
+# create figure
 fig = plt.figure(figsize = (4,4))
-ax = fig.add_subplot(111, projection='3d')
+ax = fig.add_subplot(111, projection = '3d')
 
-#Achsen beschriften
+# label axes
 ax.set_xlabel("X")
 
 ax.set_ylabel("Y")
 
 ax.set_zlabel("Z")
 
-
+# data to axis
 x = pos_df['x']
 y = pos_df['y']
 z = pos_df['z']
-ax.plot3D(xs=x,ys=y,zs=z, c = 'b')
-#for i in range(len(pos)):
 
-    #ax.plot3D(xs=pos[i][0],ys=pos[i][1],zs=pos[i][2], c = 'b')
+# plot figure
+ax.plot3D(xs = x, ys = y, zs = z, c = 'b')
 plt.show()

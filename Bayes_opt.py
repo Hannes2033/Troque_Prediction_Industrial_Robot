@@ -6,7 +6,6 @@ from tensorflow import keras
 from tensorflow.keras.layers import Dense, Dropout, LSTM
 from tensorflow.compat.v1.keras.layers import CuDNNLSTM
 
-
 # Methode die das KNN erstellt
 def build_model(input_units, conv_units, n_layers, neuron_shrink, dropout, dense_units):
     # Art des Models

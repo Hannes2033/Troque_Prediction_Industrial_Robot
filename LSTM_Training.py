@@ -6,7 +6,7 @@ from tensorflow.compat.v1.keras.layers import CuDNNLSTM
 import numpy as np
 
 
-# input and output path
+# input_pickel and output_pickel path
 input_path = "/content/drive/MyDrive/Projektarbeit WZL/Data_Pickle/transfer_input_halb.pickle"
 output_path = "/content/drive/MyDrive/Projektarbeit WZL/Data_Pickle/transfer_output_halb.pickle"
 

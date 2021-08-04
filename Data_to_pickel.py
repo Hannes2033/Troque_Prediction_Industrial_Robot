@@ -2,31 +2,31 @@ import numpy as np
 import pandas as pd
 import pickle
 
-#Dateinen Namen/Pfad
-excelName='Data/1_final_drehmomente_daten.xlsx'
+# file name/path
+excelName = 'Data/1_final_drehmomente_daten.xlsx'
 
-input_pickle_path='Data/training_input.pickle'
-input_parameter_pickle_path='Data/parameter_training_input.pickle'
-output_pickle_path='Data/training_output.pickle'
-output_parameter_pickle_path='Data/parameter_training_output.pickle'
+input_pickle_path = 'Data/training_input.pickle'
+input_parameter_pickle_path = 'Data/parameter_training_input.pickle'
+output_pickle_path = 'Data/training_output.pickle'
+output_parameter_pickle_path = 'Data/parameter_training_output.pickle'
 
-#Parameter
+# parameter
 number_of_trajectories = 1000
 num_train = int(number_of_trajectories * 0.7)
 num_test = num_train
 j = 0
 
 
-#Erstellen von leeren Arrays
+# create empty arrays
 input = np.zeros((number_of_trajectories, 1200, 18))
 output = np.zeros((number_of_trajectories, 1200, 1))
 
-#Auslesen der Daten aus einer Exel und abspeichern in den Arrays
+# reading the data from an Excel sheet and saving it in the arrays
 while j < number_of_trajectories:
-    #Daten aus Exel in dataframe speichern
+    # save data from Exel to dataframe
     Data = pd.read_excel(excelName,sheet_name='Sheet'+str(j+1))
 
-    #Input und Output trennen
+    # separate input and output
     Data_x = Data [['Position 1', 'Velocity 1','Position 2', 'Velocity 2',
                     'Position 3', 'Velocity 3', 'Position 4', 'Velocity 4',
                     'Position 5','Velocity 5', 'Position 6', 'Velocity 6',
@@ -34,36 +34,36 @@ while j < number_of_trajectories:
                     'Acceleration 4', 'Acceleration 5', 'Acceleration 6']]
     Data_y = Data[['Torque 1']]
 
-    #Daten in Array speichern
+    # save data to array
     data_x = np.array(Data_x, dtype=float)
     data_y = np.array(Data_y, dtype=float)
 
-    #Daten umspeichern
+    # restore data
     input [j] = data_x
     output [j] = data_y
 
-    #Laufvariable
+    # running variable
     j=j+1
 
-    #Zähler erstellen um Fortschritt zu prüfen
+    # create counter to check progress
     print(j,"/",number_of_trajectories)
 
 
 
 
-#Löschen der ersten 100 Einträge da diese ohne Bewegung sind
+# delete the first 100 entries because they are without movement
 del_num = np.linspace(0,100,100, dtype=int)
 
 input = np.delete(input, [del_num], axis=1)
 output = np.delete(output, [del_num], axis=1)
 
 
-#Löschen der letzten 100 Einträge um einen sauberen Schnitt zu machen
+# delete the last 100 entries to make a clean cut
 input = input[:,:1000,:]
 output = output[:,:1000,:]
 
 
-#Daten reshapen
+# data reshaping
 reshape = (number_of_trajectories*1000)/5
 reshape = int(reshape)
 
@@ -74,51 +74,49 @@ output = output.reshape(reshape,5,1)
 
 par_input =[]
 
-#Normalisierung des Inputs
+# normalization of the input
 for i in range(17):
     in_max = np.amax(input[:,:,i])
     in_min = np.amin(input[:,:,i])
     in_norm = max(in_max, abs(in_min))
-    #output[:,:,i] = (output[:,:,i] - out_min) / (out_max - out_min)
     input[:,:,i] = input[:, :, i] / in_norm
     par_input = par_input +[in_norm]
 
 par_output =[]
 
-#Normalisierung des Outputs
+# normalization of the output
 for i in range(1):
     out_max = np.amax(output[:,:,i])
     out_min = np.amin(output[:,:,i])
     out_norm = max(out_max, abs(out_min))
-    #output[:,:,i] = (output[:,:,i] - out_min) / (out_max - out_min)
     output[:,:,i] = output[:, :, i] / out_norm
     par_output = par_output + [out_norm]
     #---------------------------------------------------------------------------------------------------------------------------------
-    #Vorzeichen wechsel aufgrund falscher Drehrichtung zwischen Modell und Real-Roboter
+    # sign change due to wrong direction of rotation between model and real robot
     output[:,:,:] = -output[:,:,:]
     # ---------------------------------------------------------------------------------------------------------------------------------
 
 
-#Abspeichern des Imputs in Pickle
+# saving the input in pickle
 pickle_input = open(input_pickle_path,'wb')
 pickle.dump(input, pickle_input)
 pickle_input.close()
 
-#Abspeichern des outputs in Pickle
+# saving the output in pickle
 pickle_output = open(output_pickle_path,'wb')
 pickle.dump(output, pickle_output)
 pickle_output.close()
 
-#Abspeichern der Input parameter in Pickle
+# saving the input parameters in pickle
 pickle_par_input = open(input_parameter_pickle_path,'wb')
 pickle.dump(par_input, pickle_par_input)
 pickle_par_input.close()
 
-#Abspeichern der Output parameter in Pickle
+# saving the output parameters in pickle
 pickle_par_output = open(output_parameter_pickle_path,'wb')
 pickle.dump(par_output, pickle_par_output)
 pickle_par_output.close()
 
 print('Input shape:', input.shape)
 print('Output shape', output.shape)
-print('fertig')
+print('done')

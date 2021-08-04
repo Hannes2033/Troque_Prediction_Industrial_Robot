@@ -8,10 +8,10 @@ def func_LSTM (inp : ndarray, outp : ndarray, LSTM_num=1, Dense_num=1, percentag
     from tensorflow.keras.layers import Dense, Dropout, LSTM
     import numpy as np
 
-    #Parameter
+    # parameter
     data_num = inp.shape[0]
 
-    #Trainingsdaten und Testdaten aufteilen
+    # split training and test data
     num_train = int(data_num * percentage)
     num_test = num_train
 
@@ -20,30 +20,30 @@ def func_LSTM (inp : ndarray, outp : ndarray, LSTM_num=1, Dense_num=1, percentag
     input_test = inp[num_test:]
     output_test = outp[num_test:]
 
-    #Art des Models
+    # model type
     model = Sequential()
 
-    #Hinzufügen der Input LSTM-Layer + Dropout
+    # adding the Input LSTM layer + dropout
     model.add(LSTM(neuronen_num1, batch_input_shape=(None, 5, 21), activation='tanh', return_sequences=True))
     model.add(Dropout(dropout))
 
-    #Hinzufügen variabler Anzahl an LSTM Layer+Dropout
+    # add variable number of LSTM layer + dropout
     for i in range(LSTM_num):
         model.add(LSTM(neuronen_num2, activation='tanh', return_sequences=True))
         model.add(Dropout(dropout))
 
-    #Hinzufügen einer Denslayer+Dropout
+    # add variable number of dense layer + dropout
     for j in range(Dense_num):
         model.add(Dense(dense_neuronen_num, activation='tanh'))
         model.add(Dropout(dropout))
 
-    # Hinzufügen der Outputdense Layer
+    # add output dense layer
     model.add(Dense(6, activation='tanh'))
 
-    #Optimieser festlegen
+    # set optimizer
     opt = tf.keras.optimizers.Adam(lr=1e-3, decay=1e-5)
 
-    #Model bauen
+    # build model
     model.compile(loss='mean_absolute_error', optimizer=opt, metrics=['accuracy'])
     model.summary()
     history = model.fit(input_train, output_train, epochs=epoch_num, validation_data=(input_test, output_test), batch_size=1)

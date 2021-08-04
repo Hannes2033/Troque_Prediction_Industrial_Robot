@@ -143,7 +143,8 @@ model.summary()
 history = model.fit(input_train, output_train, epochs=epoch_num, validation_data=(input_test, output_test),
                     batch_size=batch_num)
 
-# # save weights in pickel, if you want to save the new weights you have to uncomment the following code
+# if you want to save the new weights you have to uncomment the following code
+# # save weights in pickel
 # pickle_layer_0=open("/content/drive/MyDrive/Projektarbeit WZL/Weights_Pickle/layer_0_transfer_6.pickle","wb")
 # pickle_layer_1=open("/content/drive/MyDrive/Projektarbeit WZL/Weights_Pickle/layer_1_transfer_6.pickle","wb")
 # pickle_layer_2=open("/content/drive/MyDrive/Projektarbeit WZL/Weights_Pickle/layer_2_transfer_6.pickle","wb")

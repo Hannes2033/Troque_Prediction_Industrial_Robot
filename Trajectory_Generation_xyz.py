@@ -5,21 +5,22 @@ import pandas as pd
 
 
 
-#ExelWriter erstellen
-writer = pd.ExcelWriter('Data/2_final_Trajektorien_Daten.xlsx', engine='xlsxwriter')
+# Create ExelWriter
+xyz_data ='Data/Trajectory_Data_xyz.xlsx'
+writer = pd.ExcelWriter(xyz_data, engine='xlsxwriter')
 
 
-#Dataframe erstellen
+# Create Dataframe
 trajectory_df = pd.DataFrame(columns=['x','y','z','gamma','teta'])
 
 
-#Laufvariable
+# Running variable
 j = 0
 
-#Anzahl der Trajektorien
+# Number of Trajectories
 number_of_trajectories = 5
 
-#Bereich definieren
+# Defining Area
 x_min = 1.1
 x_max = 1.5
 y_min = -0.3
@@ -27,7 +28,7 @@ y_max = 0.3
 z_min = 0.6
 z_max = 1.0
 
-# Höchste Abbruchszahl
+# Highest number of terminations
 kill_value = 50
 
 # Maximale Zahl der Berechnungen pro Trajektorie

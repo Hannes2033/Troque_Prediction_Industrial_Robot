@@ -5,16 +5,10 @@ from tensorflow.keras.layers import Dense, Dropout, LSTM
 from tensorflow.compat.v1.keras.layers import CuDNNLSTM
 import numpy as np
 
-# read input data from pickle
-pickle_in = open("/content/drive/MyDrive/Projektarbeit WZL/Data_Pickle/transfer_input_halb.pickle", "rb")
-input = pickle.load(pickle_in)
 
-# read output data from pickle
-pickle_out = open("/content/drive/MyDrive/Projektarbeit WZL/Data_Pickle/transfer_output_halb.pickle", "rb")
-output = pickle.load(pickle_out)
-
-print(input.shape)
-print(output.shape)
+# input and output path
+input_path = "/content/drive/MyDrive/Projektarbeit WZL/Data_Pickle/transfer_input_halb.pickle"
+output_path = "/content/drive/MyDrive/Projektarbeit WZL/Data_Pickle/transfer_output_halb.pickle"
 
 # determine variables
 inp = input
@@ -37,6 +31,18 @@ layer_2_weights_path = "/content/drive/MyDrive/Projektarbeit WZL/Weights_Pickle/
 layer_3_weights_path = "/content/drive/MyDrive/Projektarbeit WZL/Weights_Pickle/layer_3_3.pickle"
 layer_4_weights_path = "/content/drive/MyDrive/Projektarbeit WZL/Weights_Pickle/layer_4_3.pickle"
 layer_5_weights_path = "/content/drive/MyDrive/Projektarbeit WZL/Weights_Pickle/layer_5_3.pickle"
+
+# read input data from pickle
+pickle_in = open(input_path, "rb")
+input = pickle.load(pickle_in)
+
+# read output data from pickle
+pickle_out = open(output_path, "rb")
+output = pickle.load(pickle_out)
+
+print(input.shape)
+print(output.shape)
+
 
 # load weights-pickle
 pickle_layer_0 = open(layer_0_weights_path, "rb")
@@ -137,19 +143,21 @@ model.summary()
 history = model.fit(input_train, output_train, epochs=epoch_num, validation_data=(input_test, output_test),
                     batch_size=batch_num)
 
-# #Weights in Pickel abspeichern
+# # save weights in pickel, if you want to save the new weights you have to uncomment the following code
 # pickle_layer_0=open("/content/drive/MyDrive/Projektarbeit WZL/Weights_Pickle/layer_0_transfer_6.pickle","wb")
 # pickle_layer_1=open("/content/drive/MyDrive/Projektarbeit WZL/Weights_Pickle/layer_1_transfer_6.pickle","wb")
 # pickle_layer_2=open("/content/drive/MyDrive/Projektarbeit WZL/Weights_Pickle/layer_2_transfer_6.pickle","wb")
 # pickle_layer_3=open("/content/drive/MyDrive/Projektarbeit WZL/Weights_Pickle/layer_3_transfer_6.pickle","wb")
 # pickle_layer_4=open("/content/drive/MyDrive/Projektarbeit WZL/Weights_Pickle/layer_4_transfer_6.pickle","wb")
 # pickle_layer_5=open("/content/drive/MyDrive/Projektarbeit WZL/Weights_Pickle/layer_5_transfer_6.pickle","wb")
+#
 # pickle.dump(layer_0.get_weights(),pickle_layer_0)
 # pickle.dump(layer_1.get_weights(),pickle_layer_1)
 # pickle.dump(layer_2.get_weights(),pickle_layer_2)
 # pickle.dump(layer_3.get_weights(),pickle_layer_3)
 # pickle.dump(layer_4.get_weights(),pickle_layer_4)
 # pickle.dump(layer_5.get_weights(),pickle_layer_5)
+#
 # pickle_layer_0.close()
 # pickle_layer_1.close()
 # pickle_layer_2.close()
